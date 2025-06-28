@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup</title>
+  <link rel="stylesheet" href="css/signup.css">
+  <style>
+    /* Modal popup styling */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-popup {
+      background-color: #e5b8e8; /* Light purple background */
+      padding: 30px;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 450px;
+      width: 90%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .modal-title {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    
+    .modal-message {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+    
+    .modal-button {
+      background-color: #000;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    
+    .modal-button:hover {
+      background-color: #222;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="title-text">
+      <div class="title login">Login Form</div>
+      <div class="title signup">Signup Form</div>
+    </div>
+    <div class="form-container">
+      <div class="slide-controls">
+        <input type="radio" name="slide" id="login" checked>
+        <input type="radio" name="slide" id="signup">
+        <label for="login" class="slide login">Login</label>
+        <label for="signup" class="slide signup">Signup</label>
+        <div class="slider-tab"></div>
+      </div>
+      <div class="form-inner">
+        <form id="login-form" action="/login" method="post" class="login">
+          <div class="field">
+            <input type="text" name="email" placeholder="Email Address" required>
+          </div>
+          <div class="field">
+            <input type="password" name="password" placeholder="Password" required>
+          </div>
+          <div class="pass-link">
+            <a href="#" id="forgot-password">Forgot password?</a>
+          </div>
+          <div class="field btn">
+            <div class="btn-layer"></div>
+            <input type="submit" value="Login">
+          </div>
+          <div class="signup-link">Not a member? <a href="">Signup now</a></div>
+        </form>
+        <form id="signup-form" action="/signup" method="post" class="signup">
+          <div class="field">
+            <input type="text" name="email" placeholder="Email Address" required>
+          </div>
+          <div class="field">
+            <input type="password" name="password" placeholder="Password" required>
+          </div>
+          <div class="field">
+            <input type="password" name="confirm-password" placeholder="Confirm password" required>
+          </div>
+          <div class="field btn">
+            <div class="btn-layer"></div>
+            <input type="submit" value="Signup">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden form for forgot password -->
+  <form id="forgot-password-form" action="/forgot-password" method="post" style="display: none;">
+    <input type="text" name="email" id="forgot-email">
+  </form>
+
+  <!-- Modal Popup -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-popup">
+      <h2 id="modal-title" class="modal-title">Thank You!</h2>
+      <p id="modal-message" class="modal-message">Your message has been successfully submitted.</p>
+      <button id="modal-button" class="modal-button">CONTINUE</button>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript to handle form switching and forgot password
+    const loginForm = document.querySelector("form.login");
+    const signupForm = document.querySelector("form.signup");
+    const loginBtn = document.querySelector("label.login");
+    const signupBtn = document.querySelector("label.signup");
+    const signupLink = document.querySelector(".signup-link a");
+    const forgotPasswordLink = document.querySelector("#forgot-password");
+    const forgotPasswordForm = document.querySelector("#forgot-password-form");
+    
+    // Modal elements
+    const modalOverlay = document.getElementById("modal-overlay");
+    const modalTitle = document.getElementById("modal-title");
+    const modalMessage = document.getElementById("modal-message");
+    const modalButton = document.getElementById("modal-button");
+
+    signupBtn.onclick = () => {
+      loginForm.style.marginLeft = "-50%";
+    };
+    
+    loginBtn.onclick = () => {
+      loginForm.style.marginLeft = "0%";
+    };
+    
+    signupLink.onclick = (e) => {
+      e.preventDefault();
+      signupBtn.click();
+    };
+
+    // Handle forgot password
+    forgotPasswordLink.onclick = (e) => {
+      e.preventDefault();
+      const email = loginForm.querySelector('input[name="email"]').value;
+      if (email) {
+        document.getElementById('forgot-email').value = email;
+        forgotPasswordForm.submit();
+      } else {
+        showModal("Error", "Please enter your email address first");
+      }
+    };
+
+    // Form validation for signup
+    signupForm.onsubmit = (e) => {
+      e.preventDefault();
+      const password = signupForm.querySelector('input[name="password"]').value;
+      const confirmPassword = signupForm.querySelector('input[name="confirm-password"]').value;
+      
+      if (password !== confirmPassword) {
+        showModal("Error", "Passwords do not match");
+        return;
+      }
+      
+      // Submit form data via fetch
+      const formData = new FormData(signupForm);
+      fetch('/signup', {
+        method: 'POST',
+        body: new URLSearchParams(formData),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then(response => response.text())
+      .then(data => {
+        try {
+          // Try to parse as JSON
+          const jsonData = JSON.parse(data);
+          
+          // Check if signup was successful
+          if (jsonData.message.includes("successfully")) {
+            showModal("Success", jsonData.message, jsonData.redirect);
+          } else {
+            showModal("Error", jsonData.message);
+          }
+        } catch (e) {
+          // If not JSON, just show the text
+          showModal("Error", data);
+        }
+      })
+      .catch(error => {
+        showModal("Error", error.toString());
+      });
+    };
+
+    // Handle login form submission
+    document.getElementById("login-form").onsubmit = (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(loginForm);
+      fetch('/login', {
+        method: 'POST',
+        body: new URLSearchParams(formData),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then(response => response.text())
+      .then(data => {
+        try {
+          // Try to parse as JSON
+          const jsonData = JSON.parse(data);
+          
+          // Check if login was successful
+          if (jsonData.message.includes("successful")) {
+            showModal("Success", jsonData.message, jsonData.redirect);
+          } else {
+            showModal("Error", jsonData.message);
+          }
+        } catch (e) {
+          // If not JSON, just show the text
+          showModal("Error", data);
+        }
+      })
+      .catch(error => {
+        showModal("Error", error.toString());
+      });
+    };
+
+    // Function to show modal
+    function showModal(title, message, redirectUrl = null) {
+      modalTitle.textContent = title;
+      modalMessage.textContent = message;
+      modalOverlay.style.display = "flex";
+      
+      // Handle continue button click
+      modalButton.onclick = () => {
+        modalOverlay.style.display = "none";
+        if (redirectUrl) {
+          window.location.href = redirectUrl;
+        }
+      };
+    }
+  </script>
+</body>
+</html>

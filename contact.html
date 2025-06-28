@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Contact Us</title>
+   <style>
+      @import url('https://fonts.googleapis.com/css?family=Yantramanav:100,300');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: black;
+  color:black;
+  line-height: 1.6;
+  font-family: 'Yantramanav', sans-serif;
+  padding: 1em;
+}
+
+.container {
+  max-width: 1170px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1em;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.brand {
+  text-align: center;
+	font-weight: 300;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+}
+
+.brand span {
+  color: thistle;
+}
+
+.wrapper {
+  box-shadow: 0 0 20px 0 purple;
+}
+
+.wrapper > * {
+  padding: 1em;
+}
+
+.company-info {
+  background: purple;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.company-info h3,
+.company-info ul {
+  text-align: center;
+  margin: 0 0 1rem 0;
+}
+
+.contact {
+  background: plum;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.contact form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.contact form label {
+  display: block;
+}
+
+.contact form p {
+  margin: 0;
+}
+
+.contact form .full {
+  grid-column: 1 / 3;
+}
+
+.contact form button,
+.contact form input,
+.contact form textarea {
+  width: 100%;
+  padding: 1em;
+  border: solid 1px purple;
+  border-radius: 4px;
+}
+
+.contact form textarea {
+  resize: none;
+}
+
+.contact form button {
+  background: black;
+  border: 0;
+  color: thistle;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.contact form button:hover,
+.contact form button:focus {
+  background: rgb(0, 0, 255);
+  color:white;
+  outline: 0;
+  transition: background-color 1s ease-out;
+}
+
+/* Popup styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup-content {
+  background: plum;
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 0 20px 0 purple;
+  text-align: center;
+  max-width: 500px;
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.popup-overlay.active .popup-content {
+  transform: scale(1);
+}
+
+.popup-content h2 {
+  color: purple;
+  margin-top: 0;
+}
+
+.popup-content p {
+  margin-bottom: 1.5em;
+}
+
+.popup-content button {
+  background: black;
+  border: 0;
+  color: thistle;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 1em 2em;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.popup-content button:hover {
+  background: rgb(0, 0, 255);
+  color: white;
+  transition: background-color 0.3s ease-out;
+}
+
+@media only screen and (min-width: 700px) {
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .wrapper > * {
+    padding: 2em;
+  }
+
+  .company-info {
+    border-radius: 4px 0 0 4px;
+  }
+
+  .contact {
+    border-radius: 0 4px 4px 0;
+  }
+
+  .company-info h3,
+  .company-info ul,
+  .brand {
+    text-align: left;
+  }
+}
+   </style>
+</head>
+<body>
+  
+  <div class="container">
+    <h1 class="brand"><span>Contact Us</span></h1>
+
+    <div class="wrapper">
+        <div class="company-info">
+            <h3>Depression Detection System for Students</h3>
+            <!-- <ul>
+                <li><i class="fa fa-road"></i> Web Developer</li>
+                <li><i class="fa fa-phone"></i> Flutter Developer</li>
+                <li><i class="fa fa-envelope"></i> Programmer</li>
+            </ul> -->
+        </div>
+
+        <div class="contact">
+            <h3>E-mail Us</h3>
+            <form id="contact-form">
+                <p>
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" required>
+                </p>
+                <p>
+                    <label for="company">Rate out of 10</label>
+                    <input type="text" name="company" id="company">
+                </p>
+                <p>
+                    <label for="email">E-mail Address</label>
+                    <input type="email" name="email" id="email" required>
+                </p>
+                <p>
+                    <label for="phone">Phone Number</label>
+                    <input type="text" name="phone" id="phone">
+                </p>
+                <p class="full">
+                    <label for="message">Message</label>
+                    <textarea name="message" rows="5" id="message" required></textarea>
+                </p>
+                <p class="full">
+                    <button type="submit">Submit</button>
+                </p>
+            </form>
+        </div>
+    </div>
+  </div>
+
+  <!-- Popup notification -->
+  <div class="popup-overlay" id="successPopup">
+    <div class="popup-content">
+      <h2>Thank You!</h2>
+      <p>Your message has been successfully submitted.</p>
+      <button id="closePopup">Continue</button>
+    </div>
+  </div>
+   
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('contact-form');
+      const popup = document.getElementById('successPopup');
+      const closeBtn = document.getElementById('closePopup');
+      
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const formDataObj = {};
+        formData.forEach((value, key) => {
+          formDataObj[key] = value;
+        });
+        
+        try {
+          const response = await fetch('/post', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formDataObj)
+          });
+          
+          if (response.ok) {
+            // Show the popup
+            popup.classList.add('active');
+            
+            // Reset the form
+            form.reset();
+          } else {
+            alert('Something went wrong. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again later.');
+        }
+      });
+      
+      // Close popup and redirect
+      closeBtn.addEventListener('click', function() {
+        popup.classList.remove('active');
+        window.location.href = '/index.html';
+      });
+    });
+  </script>
+</body>
+</html>
